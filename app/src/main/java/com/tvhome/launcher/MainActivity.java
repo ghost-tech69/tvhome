@@ -157,19 +157,18 @@ public class MainActivity extends Activity {
     root.addView(head, hp);
 
     LinearLayout bar = new LinearLayout(this);
-    final TextView pIn = pill("Inputs"), pSet = pill("Settings");
+    final TextView pSet = pill("Settings");
     pWifi = pill("Wi-Fi");
     barId = pWifi.getId();
-    TextView[] ps = {pIn, pWifi, pSet};
+    TextView[] ps = {pWifi, pSet};
     for (TextView p : ps) {
       p.setNextFocusUpId(p.getId());
       LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
       lp.leftMargin = dp(12);
       bar.addView(p, lp);
     }
-    pIn.setNextFocusLeftId(pIn.getId());
+    pWifi.setNextFocusLeftId(pWifi.getId());
     pSet.setNextFocusRightId(pSet.getId());
-    pIn.setOnClickListener(v -> showInputs(pIn));
     pWifi.setOnClickListener(v -> open(Settings.ACTION_WIFI_SETTINGS));
     pSet.setOnClickListener(v -> open(Settings.ACTION_SETTINGS));
     FrameLayout.LayoutParams bp = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.TOP | Gravity.END);
@@ -188,7 +187,7 @@ public class MainActivity extends Activity {
   @Override public boolean onKeyDown(int k, KeyEvent e) {
     int sc = e.getScanCode();
     if (k == KeyEvent.KEYCODE_F7 || sc == 65) { startPkg("com.google.android.youtube.tv"); return true; }       // YouTube button
-    if (k == KeyEvent.KEYCODE_SETTINGS) { open(Settings.ACTION_SETTINGS); return true; }                          // Settings button
+    if (k == KeyEvent.KEYCODE_MENU || k == KeyEvent.KEYCODE_SETTINGS) { open(Settings.ACTION_SETTINGS); return true; }                          // Settings button
     if (k == 214 || sc == 92) { focusTile(Math.max(0, lastPos - 2 * COLS)); return true; }                        // PG up
     if (k == 215 || sc == 93) { focusTile(Math.min(items.size() - 1, lastPos + 2 * COLS)); return true; }         // PG down
     return super.onKeyDown(k, e);
