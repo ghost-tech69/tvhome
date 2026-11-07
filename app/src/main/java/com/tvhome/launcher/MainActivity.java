@@ -185,6 +185,21 @@ public class MainActivity extends Activity {
   }
   @Override public void onBackPressed() { }
 
+  @Override public boolean onKeyDown(int k, KeyEvent e) {
+    int sc = e.getScanCode();
+    if (k == KeyEvent.KEYCODE_F7 || sc == 65) { startPkg("com.google.android.youtube.tv"); return true; }       // YouTube button
+    if (k == KeyEvent.KEYCODE_SETTINGS) { open(Settings.ACTION_SETTINGS); return true; }                          // Settings button
+    if (k == 214 || sc == 92) { focusTile(Math.max(0, lastPos - 2 * COLS)); return true; }                        // PG up
+    if (k == 215 || sc == 93) { focusTile(Math.min(items.size() - 1, lastPos + 2 * COLS)); return true; }         // PG down
+    return super.onKeyDown(k, e);
+  }
+
+  void startPkg(String p) {
+    Intent i = pm.getLeanbackLaunchIntentForPackage(p);
+    if (i == null) i = pm.getLaunchIntentForPackage(p);
+    if (i != null) startActivity(i);
+  }
+
   void focusTile(final int pos) {
     if (pos >= items.size()) return;
     grid.scrollToPosition(pos);
